@@ -63,9 +63,27 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
         }
 
         // Conditionally add field automated.
-        $automatedfield = new xmldb_field('hautomated', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+        $automatedfield = new xmldb_field('automated', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
         if (!$dbman->field_exists($table, $automatedfield)) {
             $dbman->add_field($table, $automatedfield);
+        }
+
+        // Conditionally add field usermodified.
+        $usermodifiedfield = new xmldb_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $usermodifiedfield)) {
+            $dbman->add_field($table, $usermodifiedfield);
+        }
+
+        // Conditionally add field timecreated.
+        $timecreatedfield = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $timecreatedfield)) {
+            $dbman->add_field($table, $timecreatedfield);
+        }
+
+        // Conditionally add field timemodified.
+        $timemodifiedfield = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $timemodifiedfield)) {
+            $dbman->add_field($table, $timemodifiedfield);
         }
 
         // Dialogue savepoint reached.
