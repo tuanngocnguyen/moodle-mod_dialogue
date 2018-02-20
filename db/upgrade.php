@@ -24,6 +24,71 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
      */
 
     if ($oldversion < 2017111301) {
+        // Get dialogue table.
+        $table = new xmldb_table('dialogue');
+
+        // Conditionally add field mode.
+        $modefield = new xmldb_field('mode', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $modefield)) {
+            $dbman->add_field($table, $modefield);
+        }
+
+        // Conditionally add field creatorroles.
+        $creatorrolesfield = new xmldb_field('creatorroles', XMLDB_TYPE_CHAR, '512', null, null, null, null);
+        if (!$dbman->field_exists($table,  $creatorrolesfield)) {
+            $dbman->add_field($table,  $creatorrolesfield);
+        }
+
+        // Conditionally add field receiverroles.
+        $receiverrolesfield = new xmldb_field('receiverroles', XMLDB_TYPE_CHAR, '512', null, null, null, null);
+        if (!$dbman->field_exists($table, $receiverrolesfield)) {
+            $dbman->add_field($table, $receiverrolesfield);
+        }
+
+        // Conditionally add field usermodified.
+        $usermodifiedfield = new xmldb_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $usermodifiedfield)) {
+            $dbman->add_field($table, $usermodifiedfield);
+        }
+
+        // Conditionally add field timecreated.
+        $timecreatedfield = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $timecreatedfield)) {
+            $dbman->add_field($table, $timecreatedfield);
+        }
+        
+        // TODO - Migrate dialogue data.
+
+        // Conditionally drop field multipleconversations.
+        $multipleconversationsfield = new xmldb_field('multipleconversations');
+        if ($dbman->field_exists($table, $multipleconversationsfield)) {
+            $dbman->drop_field($table, $multipleconversationsfield);
+        }
+
+        // Conditionally drop field notifications.
+        $notificationsfield = new xmldb_field('notifications');
+        if ($dbman->field_exists($table, $notificationsfield)) {
+            $dbman->drop_field($table, $notificationsfield);
+        }
+
+        // Conditionally drop field notificationcontent.
+        $notificationcontentfield = new xmldb_field('notificationcontent');
+        if ($dbman->field_exists($table, $notificationcontentfield)) {
+            $dbman->drop_field($table, $notificationcontentfield);
+        }
+
+        // Conditionally add field usermodified.
+        $usermodifiedfield = new xmldb_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $usermodifiedfield)) {
+            $dbman->add_field($table, $usermodifiedfield);
+        }
+
+        // Conditionally add field timecreated.
+        $timecreatedfield = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $timecreatedfield)) {
+            $dbman->add_field($table, $timecreatedfield);
+        }
+
         // Get conversations table.
         $table = new xmldb_table('dialogue_conversations');
 
