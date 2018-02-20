@@ -24,13 +24,8 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
      */
 
     if ($oldversion < 2017111301) {
+        // Get conversations table.
         $table = new xmldb_table('dialogue_conversations');
-
-        // Conditionally rename field course to courseid.
-        $coursefield = new xmldb_field('course', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0);
-        if (!$dbman->field_exists($table, $coursefield)) {
-            $dbman->rename_field($table, $coursefield, 'courseid');
-        }
 
         // Conditionally add field ownerid.
         $owneridfield = new xmldb_field('ownerid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
@@ -84,6 +79,49 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
         $timemodifiedfield = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
         if (!$dbman->field_exists($table, $timemodifiedfield)) {
             $dbman->add_field($table, $timemodifiedfield);
+        }
+
+        // TODO - Migrate conversation data.
+
+        // Conditionally rename field course to courseid.
+        $coursefield = new xmldb_field('course', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0);
+        if (!$dbman->field_exists($table, $coursefield)) {
+            $dbman->rename_field($table, $coursefield, 'courseid');
+        }
+
+        // Get messages table.
+        $table = new xmldb_table('dialogue_messages');
+
+        // Conditionally add field draft.
+        $draftfield = new xmldb_field('draft', XMLDB_TYPE_INTEGER, '1', null, XMLDB_NOTNULL, null, '1');
+        if (!$dbman->field_exists($table, $draftfield)) {
+            $dbman->add_field($table, $draftfield);
+        }
+
+        // Conditionally add field usermodified.
+        $usermodifiedfield = new xmldb_field('usermodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $usermodifiedfield)) {
+            $dbman->add_field($table, $usermodifiedfield);
+        }
+
+        // Conditionally add field timecreated.
+        $timecreatedfield = new xmldb_field('timecreated', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $timecreatedfield)) {
+            $dbman->add_field($table, $timecreatedfield);
+        }
+
+        // Conditionally add field timemodified.
+        $timemodifiedfield = new xmldb_field('timemodified', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $timemodifiedfield)) {
+            $dbman->add_field($table, $timemodifiedfield);
+        }
+
+        // TODO - Migrate message data.
+
+        // Conditionally drop field draft.
+        $statefield = new xmldb_field('state');
+        if ($dbman->field_exists($table, statefield)) {
+            $dbman->drop_field($table, $statefield);
         }
 
         // Dialogue savepoint reached.
