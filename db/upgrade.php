@@ -56,7 +56,7 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
         if (!$dbman->field_exists($table, $timecreatedfield)) {
             $dbman->add_field($table, $timecreatedfield);
         }
-        
+
         // TODO - Migrate dialogue data.
 
         // Conditionally drop field multipleconversations.
@@ -98,22 +98,16 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
             $dbman->add_field($table, $owneridfield);
         }
 
-        // Conditionally add field initiatorid.
-        $owneridfield = new xmldb_field('initiatorid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
-        if (!$dbman->field_exists($table, $owneridfield)) {
-            $dbman->add_field($table, $owneridfield);
+        // Conditionally add field authorid.
+        $authoridfield = new xmldb_field('authorid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
+        if (!$dbman->field_exists($table, $authoridfield)) {
+            $dbman->add_field($table, $authoridfield);
         }
 
         // Conditionally add field recipientid.
         $owneridfield = new xmldb_field('recipientid', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, '0');
         if (!$dbman->field_exists($table, $owneridfield)) {
             $dbman->add_field($table, $owneridfield);
-        }
-
-        // Conditionally add field messagecount.
-        $messagecountfield = new xmldb_field('messagecount', XMLDB_TYPE_INTEGER, '3', null, XMLDB_NOTNULL, null, '0');
-        if (!$dbman->field_exists($table, $messagecountfield)) {
-            $dbman->add_field($table, $messagecountfield);
         }
 
         // Conditionally add field state.
