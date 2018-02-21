@@ -67,6 +67,19 @@ $capabilities = array(
         )
     ),
 
+    'mod/dialogue:changeowner' => array(
+        'riskbitmask' => RISK_PERSONAL,
+
+        'captype' => 'read',
+        'contextlevel' => CONTEXT_MODULE,
+        'archetypes' => array(
+            'student' => CAP_PREVENT,
+            'teacher' => CAP_PREVENT,
+            'editingteacher' => CAP_PREVENT,
+            'manager' => CAP_ALLOW
+        )
+    ),
+
     'mod/dialogue:close' => array(
 
         'captype' => 'read',
