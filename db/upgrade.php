@@ -23,7 +23,7 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
      * Moodle v3.4.0 release upgrade line.
      */
 
-    if ($oldversion < 2017111301) {
+    if ($oldversion < 2017111302) {
         // Get dialogue table.
         $table = new xmldb_table('dialogue');
 
@@ -144,7 +144,7 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
 
         // Conditionally rename field course to courseid.
         $coursefield = new xmldb_field('course', XMLDB_TYPE_INTEGER, '10', null, XMLDB_NOTNULL, null, 0);
-        if (!$dbman->field_exists($table, $coursefield)) {
+        if ($dbman->field_exists($table, $coursefield)) {
             $dbman->rename_field($table, $coursefield, 'courseid');
         }
 
@@ -179,12 +179,12 @@ function xmldb_dialogue_upgrade($oldversion = 0) {
 
         // Conditionally drop field draft.
         $statefield = new xmldb_field('state');
-        if ($dbman->field_exists($table, statefield)) {
+        if ($dbman->field_exists($table, $statefield)) {
             $dbman->drop_field($table, $statefield);
         }
 
         // Dialogue savepoint reached.
-        upgrade_mod_savepoint(true, 2017111301, 'dialogue');
+        upgrade_mod_savepoint(true, 2017111302, 'dialogue');
     }
 
     return true;
