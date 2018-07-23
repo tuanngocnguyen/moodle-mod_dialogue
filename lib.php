@@ -38,10 +38,12 @@ function dialogue_supports($feature) {
         case FEATURE_BACKUP_MOODLE2:          return true;
         case FEATURE_SHOW_DESCRIPTION:        return false;
         case FEATURE_COMMENT:                 return false;
+        case FEATURE_PLAGIARISM:              return false;
 
         default: return null;
     }
 }
+
 
 /**
  * Adds a dialogue instance
