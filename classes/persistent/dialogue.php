@@ -17,18 +17,9 @@
 namespace mod_dialogue\persistent;
 
 use core\persistent;
+use mod_dialogue\plugin_config;
 
 defined('MOODLE_INTERNAL') || die();
-
-/**
- * Library of extra functions for the dialogue module not part of the standard add-on module API set
- * but used by scripts in the mod/dialogue folder
- *
- * @package   mod_dialogue
- * @copyright 2013 Troy Williams
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
-
 
 class dialogue extends persistent {
 
@@ -48,7 +39,7 @@ class dialogue extends persistent {
             ],
             'intro' => array(
                 'type' => PARAM_RAW,
-                'description' => 'Lesson introduction text.',
+                'description' => 'Dialogue introduction text.',
                 'optional' => true,
             ),
             'introformat' => array(
@@ -59,31 +50,26 @@ class dialogue extends persistent {
             'maxattachments' => [
                 'type' => PARAM_INT,
                 'choices' => function() {
-                    return range(0, 10); // TODO implement plugin  config.
+                    return plugin_config::get_property_choices('maxattachments');
                 },
             ],
             'maxbytes' => [
                 'type' => PARAM_INT,
                 'choices' => function() use ($CFG, $COURSE) {
-                    return get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes); // TODO implement plugin  config.
+                    $modulebytes = plugin_config::get_property_choices('maxbytes');
+                    return get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes, $modulebytes);
                 },
             ],
-            'usecoursegroups' => [
+            'rolebasedopening' => [
                 'type' => PARAM_INT,
                 'choices' => [0, 1],
                 'default' => 0
             ],
-            'mode' => [
-                'type' => PARAM_INT,
-                'choices' => [0, 1],
-                'default' => 0
-            ],
-            'creatorroles' => [
+            'openerroles' => [
                 'type' => PARAM_RAW,
             ],
             'receiverroles' => [
                 'type' => PARAM_RAW,
-
             ]
         ];
     }
