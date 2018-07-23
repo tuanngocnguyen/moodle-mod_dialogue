@@ -27,16 +27,19 @@
  * @package mod_dialogue
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
+
 defined('MOODLE_INTERNAL') || die();
+
+use mod_dialogue\plugin_config;
 
 if ($hassiteconfig) {
     require_once($CFG->dirroot.'/mod/dialogue/lib.php');
     // Display unread count on course homepage.
     $settings->add(
-        new admin_setting_configcheckbox('dialogue/trackunread',
+        new admin_setting_configcheckbox_with_advanced('dialogue/trackunread',
             get_string('configtrackunread', 'dialogue'),
             '',
-            1)
+            plugin_config::get_property_default('trackunread'))
     );
     // Default total maxbytes of attached files.
     if (isset($CFG->maxbytes)) {
@@ -44,18 +47,17 @@ if ($hassiteconfig) {
             new admin_setting_configselect('dialogue/maxbytes',
                 get_string('maxattachmentsize', 'dialogue'),
                 get_string('configmaxbytes', 'dialogue'),
-                512000,
-                get_max_upload_sizes($CFG->maxbytes)
+                plugin_config::get_property_default('maxbytes'),
+                plugin_config::get_property_choices('maxbytes')
             )
         );
     }
     // Default number of attachments allowed per post.
-    $choices = [0,1,2,3,4,5,6,7,8,9,10,20];
     $settings->add(
         new admin_setting_configselect('dialogue/maxattachments',
             get_string('maxattachments', 'dialogue'),
             get_string('configmaxattachments', 'dialogue'),
-            5,
-            $choices)
+            plugin_config::get_property_default('maxattachments'),
+            plugin_config::get_property_choices('maxattachments'))
     );
 }
