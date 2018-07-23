@@ -27,26 +27,35 @@
  * @package mod_dialogue
  * @license http://www.gnu.org/copyleft/gpl.html GNU Public License
  */
-defined('MOODLE_INTERNAL') || die;
+defined('MOODLE_INTERNAL') || die();
 
 if ($hassiteconfig) {
     require_once($CFG->dirroot.'/mod/dialogue/lib.php');
-
-    // whether to provide unread post count
-    $settings->add(new admin_setting_configcheckbox('dialogue/trackunread', new lang_string('configtrackunread', 'dialogue'),
-                   '', 1));
-    // Default total maxbytes of attached files
+    // Display unread count on course homepage.
+    $settings->add(
+        new admin_setting_configcheckbox('dialogue/trackunread',
+            get_string('configtrackunread', 'dialogue'),
+            '',
+            1)
+    );
+    // Default total maxbytes of attached files.
     if (isset($CFG->maxbytes)) {
-        $settings->add(new admin_setting_configselect('dialogue/maxbytes', new lang_string('maxattachmentsize', 'dialogue'),
-                    new lang_string('configmaxbytes', 'dialogue'), 512000, get_max_upload_sizes($CFG->maxbytes)));
+        $settings->add(
+            new admin_setting_configselect('dialogue/maxbytes',
+                get_string('maxattachmentsize', 'dialogue'),
+                get_string('configmaxbytes', 'dialogue'),
+                512000,
+                get_max_upload_sizes($CFG->maxbytes)
+            )
+        );
     }
-
-    $choices = array(0,1,2,3,4,5,6,7,8,9,10,20);
-    // Default number of attachments allowed per post in all dialogues
-    $settings->add(new admin_setting_configselect('dialogue/maxattachments', new lang_string('maxattachments', 'dialogue'),
-                new lang_string('configmaxattachments', 'dialogue'), 5, $choices));
-
-    $settings->add(new admin_setting_configcheckbox('dialogue/viewconversationsbyrole', new lang_string('viewconversationsbyrole', 'dialogue'),
-                   new lang_string('configviewconversationsbyrole', 'dialogue'), 0));
-
+    // Default number of attachments allowed per post.
+    $choices = [0,1,2,3,4,5,6,7,8,9,10,20];
+    $settings->add(
+        new admin_setting_configselect('dialogue/maxattachments',
+            get_string('maxattachments', 'dialogue'),
+            get_string('configmaxattachments', 'dialogue'),
+            5,
+            $choices)
+    );
 }
