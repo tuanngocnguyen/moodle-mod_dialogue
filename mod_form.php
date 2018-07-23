@@ -64,7 +64,12 @@ class mod_dialogue_mod_form extends moodleform_mod {
         $mform->addHelpButton('maxattachments', 'maxattachments', 'dialogue');
         $mform->setDefault('maxattachments', plugin_config::get('maxattachments'));
 
-        $mform->addElement('searchableselector', 'openerroles', 'openerroles', static::get_role_choices(), array('multiple' => 'multiple'));
+        $choices = [];
+        $choices['editingteacher'] = "Teacher";
+        $choices['teacher'] = "Non editing teacher";
+        $choices['student'] = "Student";
+
+        $mform->addElement('searchableselector', 'openerroles', 'openerroles', $choices, array('multiple' => 'multiple'));
 
         $this->standard_grading_coursemodule_elements();
 
@@ -79,13 +84,5 @@ class mod_dialogue_mod_form extends moodleform_mod {
             return false;
         }
         return $data;
-    }
-
-    protected static function get_role_choices() {
-        $choices = [];
-        $choices['editingteacher'] = "Teacher";
-        $choices['teacher'] = "Non editing teacher";
-        $choices['student'] = "Student";
-        return $choices;
     }
 }
