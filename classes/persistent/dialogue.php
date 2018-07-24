@@ -43,22 +43,19 @@ class dialogue extends persistent {
                 'optional' => true,
             ),
             'introformat' => array(
-                'choices' => array(FORMAT_HTML, FORMAT_MOODLE, FORMAT_PLAIN, FORMAT_MARKDOWN),
                 'type' => PARAM_INT,
+                'choices' => array(FORMAT_HTML, FORMAT_MOODLE, FORMAT_PLAIN, FORMAT_MARKDOWN),
                 'default' => FORMAT_MOODLE
             ),
             'maxattachments' => [
                 'type' => PARAM_INT,
-                'choices' => function() {
-                    return plugin_config::get_property_choices('maxattachments');
-                },
+                'choices' => static::get_max_attachments(),
+                'default' => plugin_config::get_property_default('maxattachments'),
             ],
             'maxbytes' => [
                 'type' => PARAM_INT,
-                'choices' => function() use ($CFG, $COURSE) {
-                    $modulebytes = plugin_config::get_property_choices('maxbytes');
-                    return get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes, $modulebytes);
-                },
+                'choices' => static::get_max_bytes(),
+                'default' => plugin_config::get_property_default('maxbytes')
             ],
             'rolebasedopening' => [
                 'type' => PARAM_INT,
@@ -67,10 +64,34 @@ class dialogue extends persistent {
             ],
             'openerroles' => [
                 'type' => PARAM_RAW,
+                'null' => NULL_ALLOWED,
+                'default' => ''
+
             ],
             'receiverroles' => [
                 'type' => PARAM_RAW,
+                'null' => NULL_ALLOWED,
+                'default' => ''
             ]
         ];
+    }
+
+    public static function get_max_attachments() {
+        $choices = [];
+        $maxattachments = plugin_config::get('maxattachments');
+        foreach (plugin_config::get_property_choices('maxattachments') as $choice) {
+            if ($choice > $maxattachments) {
+                break;
+            }
+            array_push($choices, $choice);
+        }
+        return $choices;
+    }
+
+    public static function get_max_bytes() {
+        global $CFG, $COURSE;
+        $choices = [];
+        $maxmodulebytes = plugin_config::get('maxbytes');
+        return array_keys(get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes, $maxmodulebytes));
     }
 }

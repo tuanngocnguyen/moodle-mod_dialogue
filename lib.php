@@ -58,15 +58,15 @@ function dialogue_supports($feature) {
  * @return int The instance id of the new dialogue or false on failure
  */
 
-function dialogue_add_instance($data) {
-    global $DB;
-
-    $data->timecreated = time();
-    $data->timemodified = $data->timecreated;
-
-    $result =  $DB->insert_record('dialogue', $data);
-
-    return $result;
+function dialogue_add_instance($data, mod_dialogue_mod_form $form = null) {
+    $dialogue = new \mod_dialogue\persistent\dialogue();
+    $dialogue->set('course', $data->course);
+    $dialogue->set('name', $data->name);
+    $dialogue->set('intro', $data->intro);
+    $dialogue->set('introformat', $data->introformat);
+    $dialogue->set('maxbytes', $data->maxbytes);
+    $dialogue->set('maxattachments', $data->maxattachments);
+    return $dialogue->create()->get('id');
 }
 
 /**
@@ -79,15 +79,14 @@ function dialogue_add_instance($data) {
  * @param mod_dialogue_mod_form $form
  * @return bool true on success
  */
-function dialogue_update_instance($data, $mform) {
-    global $DB;
-
-    $data->timemodified = time();
-    $data->id = $data->instance;
-
-    $DB->update_record('dialogue', $data);
-
-    return true;
+function dialogue_update_instance($data, mod_dialogue_mod_form $form = null) {
+    $dialogue = new \mod_dialogue\persistent\dialogue($data->instance);
+    $dialogue->set('name', $data->name);
+    $dialogue->set('intro', $data->intro);
+    $dialogue->set('introformat', $data->introformat);
+    $dialogue->set('maxbytes', $data->maxbytes);
+    $dialogue->set('maxattachments', $data->maxattachments);
+    return $dialogue->update();
 }
 
 /**
@@ -232,7 +231,7 @@ function dialogue_cm_info_view(cm_info $cm) {
         $initialised = true;
     }
 
-    if ($usetracking) {
+    if ($usetracking == false) {
         $unread = dialogue_cm_unread_total(new \mod_dialogue\dialogue($cm));
         if ($unread) {
             $out = '<span class="unread"> <a href="' . $cm->url . '">';
