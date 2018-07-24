@@ -20,13 +20,13 @@ defined('MOODLE_INTERNAL') || die();
 
 /**
  * Class plugin_config.
- * 
+ *
  * @package mod_dialogue
  */
 class plugin_config {
 
-    /** The franken name of plugin. */
-    const PLUGIN = 'mod_dialogue';
+    /** The franken name of COMPONENT. */
+    const COMPONENT = 'mod_dialogue';
 
     /**
      * Plugin settings definition.
@@ -44,9 +44,7 @@ class plugin_config {
             'maxbytes' => [
                 'type' => PARAM_INT,
                 'default' => 512000,
-                'choices' => function() use ($CFG) {
-                    return get_max_upload_sizes($CFG->maxbytes);
-                },
+                'choices' => get_max_upload_sizes($CFG->maxbytes),
             ],
             'maxattachments' => [
                 'type' => PARAM_INT,
@@ -67,7 +65,7 @@ class plugin_config {
         if (!static::has_property($property)) {
             throw new coding_exception("Unexpected property {$property} requested.");
         }
-        $value = get_config(static::PLUGIN, $property);
+        $value = get_config(static::COMPONENT, $property);
         if ($value === false) {
             return static::get_property_default($property);
         }
@@ -145,6 +143,6 @@ class plugin_config {
         if (!static::has_property($property)) {
             throw new coding_exception("Unexpected property {$property} requested.");
         }
-        return set_config($property, $value, static::PLUGIN);
+        return set_config($property, $value, static::COMPONENT);
     }
 }

@@ -33,20 +33,21 @@ defined('MOODLE_INTERNAL') || die();
 use mod_dialogue\plugin_config;
 
 if ($hassiteconfig) {
-    require_once($CFG->dirroot.'/mod/dialogue/lib.php');
+    $component = plugin_config::COMPONENT;
     // Display unread count on course homepage.
+    $name = "{$component}/trackunread";
     $settings->add(
-        new admin_setting_configcheckbox_with_advanced('dialogue/trackunread',
-            get_string('configtrackunread', 'dialogue'),
+        new admin_setting_configcheckbox_with_advanced("{$component}/trackunread",
+            get_string('configtrackunread', $component),
             '',
             plugin_config::get_property_default('trackunread'))
     );
     // Default total maxbytes of attached files.
     if (isset($CFG->maxbytes)) {
         $settings->add(
-            new admin_setting_configselect('dialogue/maxbytes',
-                get_string('maxattachmentsize', 'dialogue'),
-                get_string('configmaxbytes', 'dialogue'),
+            new admin_setting_configselect("{$component}/maxbytes",
+                get_string('maxattachmentsize', $component),
+                get_string('configmaxbytes', $component),
                 plugin_config::get_property_default('maxbytes'),
                 plugin_config::get_property_choices('maxbytes')
             )
@@ -54,9 +55,9 @@ if ($hassiteconfig) {
     }
     // Default number of attachments allowed per post.
     $settings->add(
-        new admin_setting_configselect('dialogue/maxattachments',
-            get_string('maxattachments', 'dialogue'),
-            get_string('configmaxattachments', 'dialogue'),
+        new admin_setting_configselect("{$component}/maxattachments",
+            get_string('maxattachments', $component),
+            get_string('configmaxattachments', $component),
             plugin_config::get_property_default('maxattachments'),
             plugin_config::get_property_choices('maxattachments'))
     );
