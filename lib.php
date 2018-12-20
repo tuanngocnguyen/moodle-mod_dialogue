@@ -44,6 +44,34 @@ function dialogue_supports($feature) {
 }
 
 /**
+ * Get icon mapping for font-awesome.
+ */
+function mod_dialogue_get_fontawesome_icon_map() {
+    return [
+        'mod_dialogue:i/filter' => 'fa-filter',
+        'mod_dialogue:i/sort' => 'fa-sort',
+    ];
+}
+
+/**
+ *
+ * @return mixed
+ */
+function mod_dialogue_user_preferences() {
+    $preferences['mod_dialogue_list_filter'] = [
+        'null' => NULL_NOT_ALLOWED,
+        'default' => 'all',
+        'type' => PARAM_ALPHA,
+        'choices' => [
+            'all',
+            'open',
+            'closed'
+        ]
+    ];
+    return $preferences;
+}
+
+/**
  * Adds a dialogue instance
  *
  * Given an object containing all the necessary data,
@@ -136,7 +164,7 @@ function dialogue_process_bulk_openrules() {
     require_once($CFG->dirroot.'/mod/dialogue/locallib.php');
     
     mtrace('1. Dealing with bulk open rules...');
-     
+    
     $sql = "SELECT dbor.*
               FROM {dialogue_bulk_opener_rules} dbor
               JOIN {dialogue_messages} dm ON dm.conversationid = dbor.conversationid
@@ -261,7 +289,7 @@ function dialogue_cm_info_view(cm_info $cm) {
 function dialogue_user_outline($course, $user, $mod, $dialogue) {
     global $DB;
 
-    $sql = "SELECT COUNT(DISTINCT dm.timecreated) AS count, 
+    $sql = "SELECT COUNT(DISTINCT dm.timecreated) AS count,
                      MAX(dm.timecreated) AS timecreated
               FROM {dialogue_messages} dm
              WHERE dm.dialogueid = :dialogueid

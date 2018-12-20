@@ -66,7 +66,9 @@ if (!empty($dialogue->activityrecord->intro)) {
     echo $OUTPUT->box(format_module_intro('dialogue', $dialogue->activityrecord, $cm->id), 'generalbox', 'intro');
 }
 
-echo $renderer->tab_navigation($dialogue);
+//echo $renderer->tab_navigation($dialogue);
+$tabtree = \mod_dialogue\local\tab_tree::build_navigation();
+echo $renderer->render($tabtree);
 $html = '';
 if (!$rs) {
     $html .= $OUTPUT->notification(get_string('nodraftsfound', 'dialogue'), 'notifyproblem');

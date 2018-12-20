@@ -82,11 +82,40 @@ if (!empty($dialogue->activityrecord->intro)) {
     echo $OUTPUT->box(format_module_intro('dialogue', $dialogue->activityrecord, $cm->id), 'generalbox', 'intro');
 }
 
-// render tab navigation, toggle button groups and order by dropdown
-echo $renderer->tab_navigation($dialogue);
-echo $renderer->state_button_group();
-echo $renderer->list_sortby(\mod_dialogue\conversations_by_author::get_sort_options(), $sort, $direction);
-echo $renderer->conversation_listing($list);
+//$data = new stdClass(); // new single_button().
+//$url = new moodle_url('/mod/dialogue/edit.php');
+//$data->id = '-1';
+//$data->cmid = $cm->id;
+//$data->sesskey = sesskey();
+//$data->url = $url->out();
+//$data->label = get_string('startanew', 'mod_dialogue');
+//echo $renderer->render_new_dialogue_button($data);
+
+
+$button = new single_button(
+    new moodle_url('/mod/dialogue/edit.php', ['id' => '-1', 'cmid' => $cm->id]),
+    get_string('startanew', 'mod_dialogue'),
+    'post',
+    true
+);
+//moodle_url $url, $label, $method='post', $primary=false
+
+echo $renderer->render($button);
+echo html_writer::empty_tag('hr');
+$tabtree = \mod_dialogue\local\tab_tree::build_navigation();
+echo $renderer->render($tabtree);
+
+
+echo $renderer->render_list_filter_selector();
+
+
+//$toolbar = new mod_dialogue\output\view_listing_toolbar();
+//echo $renderer->render($toolbar);
+//echo $renderer->render_nav_filter_selector();
+
+
+//echo $renderer->list_sortby(\mod_dialogue\conversations_by_author::get_sort_options(), $sort, $direction);
+//echo $renderer->conversation_listing($list);
 echo $OUTPUT->footer($course);
 
 // Trigger course module viewed event
