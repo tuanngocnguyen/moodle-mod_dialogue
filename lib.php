@@ -46,6 +46,34 @@ function dialogue_supports($feature) {
 
 
 /**
+ * Get icon mapping for font-awesome.
+ */
+function mod_dialogue_get_fontawesome_icon_map() {
+    return [
+        'mod_dialogue:i/filter' => 'fa-filter',
+        'mod_dialogue:i/sort' => 'fa-sort',
+    ];
+}
+
+/**
+ *
+ * @return mixed
+ */
+function mod_dialogue_user_preferences() {
+    $preferences['mod_dialogue_list_filter'] = [
+        'null' => NULL_NOT_ALLOWED,
+        'default' => 'all',
+        'type' => PARAM_ALPHA,
+        'choices' => [
+            'all',
+            'open',
+            'closed'
+        ]
+    ];
+    return $preferences;
+}
+
+/**
  * Adds a dialogue instance
  *
  * Given an object containing all the necessary data,
