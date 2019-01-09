@@ -68,6 +68,16 @@ function mod_dialogue_user_preferences() {
             'closed'
         ]
     ];
+    $preferences['mod_dialogue_list_sort'] = [
+        'null' => NULL_NOT_ALLOWED,
+        'default' => 'latest',
+        'type' => PARAM_ALPHA,
+        'choices' => [
+            'latest',
+            'oldest',
+            'unread'
+        ]
+    ];
     return $preferences;
 }
 
