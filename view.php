@@ -77,9 +77,9 @@ $list->set_order($sort, $direction);
 $renderer = $PAGE->get_renderer('mod_dialogue');
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($activityrecord->name);
+//echo $OUTPUT->heading($activityrecord->name);
 if (!empty($dialogue->activityrecord->intro)) {
-    echo $OUTPUT->box(format_module_intro('dialogue', $dialogue->activityrecord, $cm->id), 'generalbox', 'intro');
+    //echo $OUTPUT->box(format_module_intro('dialogue', $dialogue->activityrecord, $cm->id), 'generalbox', 'intro');
 }
 
 //$data = new stdClass(); // new single_button().
@@ -98,6 +98,8 @@ $button = new single_button(
     'post',
     true
 );
+
+
 //moodle_url $url, $label, $method='post', $primary=false
 
 echo $renderer->render($button);
@@ -107,11 +109,12 @@ echo $renderer->render($tabtree);
 
 
 echo $renderer->render_list_filter_selector();
-
+echo $renderer->render_list_sort_selector();
+//echo $renderer->render_list_toolbar();
 
 //$toolbar = new mod_dialogue\output\view_listing_toolbar();
 //echo $renderer->render($toolbar);
-//echo $renderer->render_nav_filter_selector();
+
 
 
 //echo $renderer->list_sortby(\mod_dialogue\conversations_by_author::get_sort_options(), $sort, $direction);

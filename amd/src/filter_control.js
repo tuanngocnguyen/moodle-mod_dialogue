@@ -60,15 +60,24 @@ define(
                 data.originalEvent.preventDefault();
             });
         };
-        return {
-            init: function(selector, preferenceName) {
-                log.debug('Initialising filter...');
-                selector = $(selector);
-                registerSelector(selector);
-                if (preferenceName !== undefined) {
-                    selector.attr(SELECTORS.PREFERENCE, preferenceName);
-                    preferences.push(preferenceName);
-                }
+
+        /**
+         *
+         */
+        var init = function(selector, preferenceName) {
+            log.debug('Initialising filter...');
+            selector = $(selector);
+            registerSelector(selector);
+            if (preferenceName !== undefined) {
+                selector.attr(SELECTORS.PREFERENCE, preferenceName);
+                preferences.push(preferenceName);
             }
+        };
+
+        /**
+         *
+         */
+        return {
+            init: init
         };
 });

@@ -215,8 +215,17 @@ $string['deleteallrules'] = 'Delete all opener rules';
 
 $string['startanew'] = 'Start a new dialogue';
 $string['all'] = 'All';
-$string['aria:filterdropdown'] = 'aria:filterdropdown';
+$string['aria:filterdropdown'] = 'Filtering dropdown';
 $string['aria:all'] = 'aria:all';
 $string['aria:open'] = 'aria:open';
 $string['aria:closed'] = 'aria:closed';
 $string['aria:controls'] = 'aria:controls';
+
+$string['latest'] = 'Latest';
+$string['aria:latest'] = 'latest';
+$string['oldest'] = 'Oldest';
+$string['aria:oldest'] = 'Oldest';
+$string['unread'] = 'Unread';
+$string['aria:unread'] = 'Unread';
+
+$string['aria:sortingdropdown'] = 'Sorting dropdown';

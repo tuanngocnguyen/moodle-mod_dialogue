@@ -15,7 +15,7 @@
     along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 }}
 {{!
-    @template mod_dialogue/view_filter_selector
+    @template mod_dialogue/list_filter_selector
 
     This template renders filter dropdown.
 
@@ -26,8 +26,7 @@
         "closed": false
     }
 }}
-<div class="d-flex align-items-center flex-wrap">
-<div id="list-selector-{{uniqid}}" class="dropdown m-b-1 mr-auto">
+<div id="list-selector-{{uniqid}}" class="dropdown m-b-1">
     <button id="groupingdropdown" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{#str}} aria:filterdropdown, mod_dialogue {{/str}}">
         {{#pix}} i/filter {{/pix}}
         <span class="d-sm-inline-block" data-active-item-text>
@@ -53,7 +52,6 @@
             </a>
         </li>
     </ul>
-</div>
 </div>
 {{#js}}
     require(
