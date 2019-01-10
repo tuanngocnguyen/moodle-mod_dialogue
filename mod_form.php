@@ -43,17 +43,17 @@ class mod_dialogue_mod_form extends moodleform_mod {
         $mform->addRule('name', null, 'required', null, 'client');
 
         moodleform_mod::standard_intro_elements();
-
+        $choices = \mod_dialogue\local\persistent\dialogue::get_max_bytes_choices();
         $mform->addElement(
             'select',
             'maxbytes',
             get_string('maxattachmentsize', 'dialogue'),
-            plugin_config::get_property_choices('maxbytes')
+            $choices
         );
         $mform->addHelpButton('maxbytes', 'maxattachmentsize', 'dialogue');
         $mform->setDefault('maxbytes', plugin_config::get('maxbytes'));
 
-        $choices = plugin_config::get_property_choices('maxattachments');
+        $choices = \mod_dialogue\local\persistent\dialogue::get_max_attachments_choices();
         $choices[0] = get_string('uploadnotallowed');
         $mform->addElement(
             'select',

@@ -118,7 +118,7 @@ function dialogue_add_instance($data, mod_dialogue_mod_form $form = null) {
  * @return bool true on success
  */
 function dialogue_update_instance($data, mod_dialogue_mod_form $form = null) {
-    $dialogue = new \mod_dialogue\persistent\local\dialogue($data->instance);
+    $dialogue = new \mod_dialogue\local\persistent\dialogue($data->instance);
     $dialogue->set('name', $data->name);
     $dialogue->set('intro', $data->intro);
     $dialogue->set('introformat', $data->introformat);

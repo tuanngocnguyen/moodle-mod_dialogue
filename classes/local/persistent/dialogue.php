@@ -49,12 +49,12 @@ class dialogue extends persistent {
             ),
             'maxattachments' => [
                 'type' => PARAM_INT,
-                'choices' => static::get_max_attachments(),
+                'choices' => static::get_max_attachments_choices(true),
                 'default' => plugin_config::get_property_default('maxattachments'),
             ],
             'maxbytes' => [
-                'type' => PARAM_INT,
-                'choices' => static::get_max_bytes(),
+                'type' => PARAM_RAW,
+                'choices' => static::get_max_bytes_choices(true),
                 'default' => plugin_config::get_property_default('maxbytes')
             ],
             'rolebasedopening' => [
@@ -76,7 +76,7 @@ class dialogue extends persistent {
         ];
     }
 
-    public static function get_max_attachments() {
+    public static function get_max_attachments_choices($keys = false) {
         $choices = [];
         $maxattachments = plugin_config::get('maxattachments');
         foreach (plugin_config::get_property_choices('maxattachments') as $choice) {
@@ -85,13 +85,13 @@ class dialogue extends persistent {
             }
             array_push($choices, $choice);
         }
-        return $choices;
+        return $keys ? array_keys($choices) : $choices;
     }
 
-    public static function get_max_bytes() {
+    public static function get_max_bytes_choices($keys = false) {
         global $CFG, $COURSE;
-        $choices = [];
         $maxmodulebytes = plugin_config::get('maxbytes');
-        return array_keys(get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes, $maxmodulebytes));
+        $choices = get_max_upload_sizes($CFG->maxbytes, $COURSE->maxbytes, $maxmodulebytes);
+        return $keys ? array_keys($choices) : $choices;
     }
 }
