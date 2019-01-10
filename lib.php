@@ -59,7 +59,7 @@ function dialogue_supports($feature) {
  */
 
 function dialogue_add_instance($data, mod_dialogue_mod_form $form = null) {
-    $dialogue = new \mod_dialogue\persistent\dialogue();
+    $dialogue = new \mod_dialogue\local\persistent\dialogue();
     $dialogue->set('course', $data->course);
     $dialogue->set('name', $data->name);
     $dialogue->set('intro', $data->intro);
@@ -80,7 +80,7 @@ function dialogue_add_instance($data, mod_dialogue_mod_form $form = null) {
  * @return bool true on success
  */
 function dialogue_update_instance($data, mod_dialogue_mod_form $form = null) {
-    $dialogue = new \mod_dialogue\persistent\dialogue($data->instance);
+    $dialogue = new \mod_dialogue\persistent\local\dialogue($data->instance);
     $dialogue->set('name', $data->name);
     $dialogue->set('intro', $data->intro);
     $dialogue->set('introformat', $data->introformat);
@@ -137,7 +137,7 @@ function dialogue_process_bulk_openrules() {
     require_once($CFG->dirroot.'/mod/dialogue/locallib.php');
     
     mtrace('1. Dealing with bulk open rules...');
-     
+    
     $sql = "SELECT dbor.*
               FROM {dialogue_bulk_opener_rules} dbor
               JOIN {dialogue_messages} dm ON dm.conversationid = dbor.conversationid
@@ -262,7 +262,7 @@ function dialogue_cm_info_view(cm_info $cm) {
 function dialogue_user_outline($course, $user, $mod, $dialogue) {
     global $DB;
 
-    $sql = "SELECT COUNT(DISTINCT dm.timecreated) AS count, 
+    $sql = "SELECT COUNT(DISTINCT dm.timecreated) AS count,
                      MAX(dm.timecreated) AS timecreated
               FROM {dialogue_messages} dm
              WHERE dm.dialogueid = :dialogueid

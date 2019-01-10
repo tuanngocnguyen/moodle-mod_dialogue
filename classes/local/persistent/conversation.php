@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-namespace mod_dialogue\persistent;
+namespace mod_dialogue\local\persistent;
 
 use core\persistent;
 
@@ -50,11 +50,6 @@ class conversation extends persistent {
                 'type' => PARAM_INT,
                 'default' => 0,
                 'description' => 'Initial author of conversation'
-            ],
-            'recipentid' => [
-                'type' => PARAM_INT,
-                'default' => 0,
-                'description' => 'The recipent of the initated conversation'
             ],
             'body' => array(
                 'type' => PARAM_RAW,
