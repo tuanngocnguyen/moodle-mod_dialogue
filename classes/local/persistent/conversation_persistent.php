@@ -20,8 +20,9 @@ use core\persistent;
 
 defined('MOODLE_INTERNAL') || die();
 
-class conversation extends persistent {
-
+class conversation_persistent extends persistent {
+    
+    /** Table name. */
     const TABLE = 'dialogue_conversations';
 
     protected static function define_properties() {
@@ -29,7 +30,7 @@ class conversation extends persistent {
         return [
             'courseid' => [
                 'type' => PARAM_INT,
-                'default' => 0,
+                'default' => $COURSE->id,
                 'description' => 'Foreign key reference to the course'
             ],
             'dialogueid' => [
@@ -51,16 +52,21 @@ class conversation extends persistent {
                 'default' => 0,
                 'description' => 'Initial author of conversation'
             ],
-            'body' => array(
+            'body' => [
                 'type' => PARAM_RAW,
-                'description' => 'Lesson introduction text.',
+                'description' => 'Lesson introduction text',
                 'optional' => true,
-            ),
-            'bodyformat' => array(
-                'choices' => array(FORMAT_HTML, FORMAT_MOODLE, FORMAT_PLAIN, FORMAT_MARKDOWN),
+            ],
+            'bodyformat' => [
+                'choices' => [
+                    FORMAT_HTML,
+                    FORMAT_MOODLE,
+                    FORMAT_PLAIN,
+                    FORMAT_MARKDOWN
+                ],
                 'type' => PARAM_INT,
                 'default' => FORMAT_MOODLE
-            ),
+            ],
             'bodytrust' => [
                 'type' => PARAM_INT,
                 'default' => 0,
@@ -82,5 +88,15 @@ class conversation extends persistent {
                 'default' => 0,
             ],
         ];
+    }
+    
+    public function get_recipients() {
+        $recipients = [];
+        if ($this->raw_get('id') > 0) {
+            $recipients = participant_persistent::get_records(
+            
+            );
+        }
+        return $recipients;
     }
 }

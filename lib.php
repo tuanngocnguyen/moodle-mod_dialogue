@@ -44,7 +44,6 @@ function dialogue_supports($feature) {
     }
 }
 
-
 /**
  * Get icon mapping for font-awesome.
  */
@@ -56,6 +55,7 @@ function mod_dialogue_get_fontawesome_icon_map() {
 }
 
 /**
+ * Define setable user preferences to be used with dialogue module.
  *
  * @return mixed
  */
@@ -92,11 +92,12 @@ function mod_dialogue_user_preferences() {
  * of the new instance.
  *
  * @param stdClass $data
- * @param mod_dialogue_mod_form $form
- * @return int The instance id of the new dialogue or false on failure
+ * @param mod_dialogue_mod_form|null $form
+ * @return mixed
+ * @throws \core\invalid_persistent_exception
+ * @throws coding_exception
  */
-
-function dialogue_add_instance($data, mod_dialogue_mod_form $form = null) {
+function dialogue_add_instance(stdClass $data, mod_dialogue_mod_form $form = null) {
     $dialogue = new \mod_dialogue\local\persistent\dialogue();
     $dialogue->set('course', $data->course);
     $dialogue->set('name', $data->name);
@@ -114,10 +115,12 @@ function dialogue_add_instance($data, mod_dialogue_mod_form $form = null) {
  * mod.html) this function will update an existing instance with new data.
  *
  * @param stdClass $data
- * @param mod_dialogue_mod_form $form
- * @return bool true on success
+ * @param mod_dialogue_mod_form|null $form
+ * @return bool
+ * @throws \core\invalid_persistent_exception
+ * @throws coding_exception
  */
-function dialogue_update_instance($data, mod_dialogue_mod_form $form = null) {
+function dialogue_update_instance(stdClass $data, mod_dialogue_mod_form $form = null) {
     $dialogue = new \mod_dialogue\local\persistent\dialogue($data->instance);
     $dialogue->set('name', $data->name);
     $dialogue->set('intro', $data->intro);
@@ -258,6 +261,7 @@ function dialogue_process_bulk_openrules() {
 function dialogue_cm_info_view(cm_info $cm) {
     global $CFG;
     require_once($CFG->dirroot . '/mod/dialogue/locallib.php');
+    return;
 
     // Get tracking status (once per request)
     static $initialised;
