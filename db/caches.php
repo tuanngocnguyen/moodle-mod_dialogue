@@ -32,4 +32,10 @@ $definitions = array(
         'mode' => cache_store::MODE_SESSION,
         'persistent' => true,
     ),
+    'courseparticipants' => array(
+        'mode' => cache_store::MODE_REQUEST,
+        'simplekeys' => true,
+        'simpledata' => false,
+        'requireidentifiers' => array('courseid')
+    ),
 );

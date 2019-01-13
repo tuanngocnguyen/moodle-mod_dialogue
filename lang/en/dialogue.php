@@ -26,6 +26,7 @@ $string['cachedef_params'] = 'Params - user interface';
 $string['cachedef_participants'] = 'Participants id\'s (basic information)';
 $string['cachedef_unreadcounts'] = 'Users unread message counts in conversations';
 $string['cachedef_userdetails'] = 'User brief details, all enrolled users';
+$string['cachedef_courseparticipants'] = 'Course participant information including profile image URL and course role assignments';
 $string['cannotclosedraftconversation'] = 'You cannot close a conversation that hasn\'t started!';
 $string['cannotdeleteopenconversation'] = 'You cannot delete a open conversation';
 $string['closed'] = 'Closed';
