@@ -30,7 +30,7 @@
 
 defined('MOODLE_INTERNAL') || die();
 
-use mod_dialogue\plugin_config;
+use mod_dialogue\local\plugin_config;
 
 if ($hassiteconfig) {
     $component = plugin_config::COMPONENT;

@@ -17,7 +17,8 @@
 namespace mod_dialogue\local\persistent;
 
 use core\persistent;
-use mod_dialogue\plugin_config;
+use mod_dialogue\local\course_participants_cache;
+use mod_dialogue\local\plugin_config;
 use context_module;
 use cache;
 use cache_store;
@@ -32,32 +33,6 @@ class dialogue_persistent extends persistent {
     protected $context;
     protected $course;
     protected $coursemodule;
-    
-    protected static $courseparticipantscache;
-    protected static $roleassignmentscache;
-    
-    public function load_caches() {
-        global $CFG;
-        $courseid = $this->raw_get('course');
-        if ($courseid > 0) {
-            require_once($CFG->dirroot . '/user/lib.php');
-            $courseparticipantscache = cache::make_from_params(cache_store::MODE_REQUEST, 'mod_dialogue', 'courseparticipants');
-            $total = user_get_total_participants($courseid);
-            $rs = user_get_participants($courseid, 0, 0, 0, 0, -1, '');
-            $userkeys = [];
-            foreach ($rs as $user) {
-                array_push($userkeys, $user->id);
-                $courseparticipantscache->set($user->id, $user);
-            }
-            $rs->close();
-            $roleassignmentscache = cache::make_from_params(cache_store::MODE_REQUEST, 'mod_dialogue', 'roleassignments');
-            $roleassignments = get_users_roles($this->context, $userkeys,
-                true, 'c.contextlevel DESC, r.sortorder ASC');
-            foreach ($roleassignments as $usersroles) {
-                print_object($usersroles);
-            }
-        }
-    }
     
     protected static function define_properties() {
         global $COURSE;
