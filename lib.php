@@ -98,7 +98,7 @@ function mod_dialogue_user_preferences() {
  * @throws coding_exception
  */
 function dialogue_add_instance(stdClass $data, mod_dialogue_mod_form $form = null) {
-    $dialogue = new \mod_dialogue\local\persistent\dialogue();
+    $dialogue = new \mod_dialogue\local\persistent\dialogue_persistent();
     $dialogue->set('course', $data->course);
     $dialogue->set('name', $data->name);
     $dialogue->set('intro', $data->intro);
@@ -121,7 +121,7 @@ function dialogue_add_instance(stdClass $data, mod_dialogue_mod_form $form = nul
  * @throws coding_exception
  */
 function dialogue_update_instance(stdClass $data, mod_dialogue_mod_form $form = null) {
-    $dialogue = new \mod_dialogue\local\persistent\dialogue($data->instance);
+    $dialogue = new \mod_dialogue\local\persistent\dialogue_persistent($data->instance);
     $dialogue->set('name', $data->name);
     $dialogue->set('intro', $data->intro);
     $dialogue->set('introformat', $data->introformat);

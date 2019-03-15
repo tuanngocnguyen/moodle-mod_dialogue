@@ -27,7 +27,7 @@ defined('MOODLE_INTERNAL') || die();
 require_once ($CFG->dirroot.'/mod/dialogue/locallib.php');
 require_once ($CFG->dirroot.'/course/moodleform_mod.php');
 
-use mod_dialogue\plugin_config;
+use mod_dialogue\local\plugin_config;
 
 class mod_dialogue_mod_form extends moodleform_mod {
 
@@ -38,12 +38,12 @@ class mod_dialogue_mod_form extends moodleform_mod {
 
         $mform->addElement('header', 'general', get_string('general', 'form'));
 
-        $mform->addElement('text', 'name', get_string('dialoguename', 'dialogue'), array('size'=>'64'));
+        $mform->addElement('text', 'name', get_string('dialoguename', 'dialogue'), ['size' => '64']);
         $mform->setType('name', PARAM_TEXT);
         $mform->addRule('name', null, 'required', null, 'client');
 
         moodleform_mod::standard_intro_elements();
-        $choices = \mod_dialogue\local\persistent\dialogue::get_max_bytes_choices();
+        $choices = \mod_dialogue\local\persistent\dialogue_persistent::get_max_bytes_choices();
         $mform->addElement(
             'select',
             'maxbytes',
@@ -53,7 +53,7 @@ class mod_dialogue_mod_form extends moodleform_mod {
         $mform->addHelpButton('maxbytes', 'maxattachmentsize', 'dialogue');
         $mform->setDefault('maxbytes', plugin_config::get('maxbytes'));
 
-        $choices = \mod_dialogue\local\persistent\dialogue::get_max_attachments_choices();
+        $choices = \mod_dialogue\local\persistent\dialogue_persistent::get_max_attachments_choices();
         $choices[0] = get_string('uploadnotallowed');
         $mform->addElement(
             'select',
@@ -69,7 +69,7 @@ class mod_dialogue_mod_form extends moodleform_mod {
         $choices['teacher'] = "Non editing teacher";
         $choices['student'] = "Student";
 
-        $mform->addElement('searchableselector', 'openerroles', 'openerroles', $choices, array('multiple' => 'multiple'));
+        $mform->addElement('searchableselector', 'openerroles', 'openerroles', $choices, ['multiple' => 'multiple']);
 
         $this->standard_grading_coursemodule_elements();
 

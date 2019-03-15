@@ -27,7 +27,7 @@ class course_participants_cache {
     /** @var int $courseid The course. */
     protected $courseid;
     
-    /** @var $cache The cache store. */
+    /** @var cache $cache The cache store. */
     protected $cache;
     
     /**
@@ -68,7 +68,8 @@ class course_participants_cache {
      * Wrapper method for cache store.
      *
      * @param int $id
-     * @return mixed
+     * @return false|mixed
+     * @throws \coding_exception
      */
     public function get(int $id) {
         return $this->cache->get($id);

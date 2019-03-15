@@ -26,9 +26,12 @@ require_once(__DIR__ . '/../../config.php');
 $id = required_param('id', PARAM_INT);
 if ($id) {
     var_dump($id);
+    $conversation = new \mod_dialogue\local\persistent\conversation_persistent($id);
 } else {
     $cmid = required_param('cmid', PARAM_INT);
+    $conversation = new \mod_dialogue\local\persistent\conversation_persistent();
 }
+//var_dump($conversation->to_record());die;
 $cm = get_coursemodule_from_id('dialogue', $cmid, 0, false, MUST_EXIST);
 $dialogue = new \mod_dialogue\local\persistent\dialogue_persistent($cm->instance);
 $course = $dialogue->get('course');
@@ -37,6 +40,17 @@ $PAGE->set_cm($cm, $course, $dialogue->to_record());
 $PAGE->set_context($context);
 $pageurl = new moodle_url('/mod/dialogue/edit.php');
 $PAGE->set_url($pageurl);
+$PAGE->requires->css('/mod/dialogue/recipient.css');
+$customdata['dialogue'] = $dialogue;
+$customdata['persistent'] = $conversation;
+$form = new mod_dialogue\local\form\conversation_form(null, $customdata);
+if ($data = $form->get_data()) {
+    print_object($data);
+}
+$renderer = $PAGE->get_renderer('mod_dialogue');
 echo $OUTPUT->header();
-$dialogue->load_caches();
+//echo $renderer->render_from_template('mod_dialogue/recipient_drawer', []);
+echo $form->render();
+
+//$form->display();
 echo $OUTPUT->footer($course);

@@ -40,7 +40,9 @@ class conversation_persistent extends persistent {
             ],
             'subject' => [
                 'type' => PARAM_RAW,
-                'description' => 'Subject'
+                'description' => 'Subject',
+                'null' => NULL_ALLOWED,
+                'default' => ''
             ],
             'ownerid' => [
                 'type' => PARAM_INT,
@@ -54,8 +56,9 @@ class conversation_persistent extends persistent {
             ],
             'body' => [
                 'type' => PARAM_RAW,
-                'description' => 'Lesson introduction text',
-                'optional' => true,
+                'description' => 'Message content',
+                'null' => NULL_ALLOWED,
+                'default' => ''
             ],
             'bodyformat' => [
                 'choices' => [
@@ -65,7 +68,7 @@ class conversation_persistent extends persistent {
                     FORMAT_MARKDOWN
                 ],
                 'type' => PARAM_INT,
-                'default' => FORMAT_MOODLE
+                'default' => FORMAT_HTML
             ],
             'bodytrust' => [
                 'type' => PARAM_INT,

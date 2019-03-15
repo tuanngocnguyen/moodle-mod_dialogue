@@ -230,3 +230,4 @@ $string['unread'] = 'Unread';
 $string['aria:unread'] = 'Unread';
 
 $string['aria:sortingdropdown'] = 'Sorting dropdown';
+$string['yournewdialogue'] = 'Your new dialogue';
