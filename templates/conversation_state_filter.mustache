@@ -26,7 +26,7 @@
         "closed": false
     }
 }}
-<div id="list-selector-{{uniqid}}" class="dropdown m-b-1">
+<div id="mod-dialogue-list-filter-state-{{uniqid}}" class="dropdown m-b-1">
     <button id="groupingdropdown" type="button" class="btn btn-outline-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="{{#str}} aria:filterdropdown, mod_dialogue {{/str}}">
         {{#pix}} i/filter {{/pix}}
         <span class="d-sm-inline-block" data-active-item-text>
@@ -56,9 +56,9 @@
 {{#js}}
     require(
     [
-    'mod_dialogue/filter_control'
+    'mod_dialogue/dropdown_control'
     ],
-    function(FilterControl) {
-        FilterControl.init('#list-selector-{{uniqid}}', 'mod_dialogue_list_filter');
+    function(dropDownControl) {
+        dropDownControl.init('#mod-dialogue-list-filter-state-{{uniqid}}', '{{{preferencename}}}');
     });
 {{/js}}

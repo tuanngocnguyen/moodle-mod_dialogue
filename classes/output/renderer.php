@@ -46,14 +46,14 @@ class renderer extends plugin_renderer_base {
     }
     
     public function render_list_filter_selector() {
-        $preferencename = 'mod_dialogue_list_filter';
-        $userpreference = mod_dialogue_user_preferences()[$preferencename];
-        $selected = get_user_preferences($preferencename, $userpreference['default']);
         $data = new stdClass();
+        $data->preferencename = 'mod_dialogue:conversation_state_filter';
+        $userpreference = mod_dialogue_user_preferences()[$data->preferencename];
+        $selected = get_user_preferences($data->preferencename, $userpreference['default']);
         foreach ($userpreference['choices'] as $name) {
             $data->{$name} = ($name == $selected) ? true : false;
         }
-        return parent::render_from_template("mod_dialogue/list_filter_selector", $data);
+        return parent::render_from_template("mod_dialogue/conversation_state_filter", $data);
     }
     
     public function render_list_sort_selector() {

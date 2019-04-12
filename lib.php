@@ -60,7 +60,7 @@ function mod_dialogue_get_fontawesome_icon_map() {
  * @return mixed
  */
 function mod_dialogue_user_preferences() {
-    $preferences['mod_dialogue_list_filter'] = [
+    $preferences['mod_dialogue:conversation_state_filter'] = [
         'null' => NULL_NOT_ALLOWED,
         'default' => 'all',
         'type' => PARAM_ALPHA,

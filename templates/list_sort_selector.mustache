@@ -56,9 +56,9 @@
 {{#js}}
     require(
     [
-    'mod_dialogue/filter_control'
+    'mod_dialogue/dropdown_control'
     ],
-    function(FilterControl) {
-    FilterControl.init('#mod-dialogue-list-sort-{{uniqid}}', 'mod_dialogue_list_sort');
+    function(dropDownControl) {
+        dropDownControl.init('#mod-dialogue-list-sort-{{uniqid}}', 'mod_dialogue_list_sort');
     });
 {{/js}}
