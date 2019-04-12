@@ -41,6 +41,19 @@ use stdClass;
  */
 class renderer extends plugin_renderer_base {
 
+    /**
+     * @param $heading
+     * @param null $intro
+     * @return bool|string
+     * @throws \moodle_exception
+     */
+    public function render_dialogue_header($heading, $intro = null) {
+        $data = new stdClass();
+        $data->heading = $heading;
+        $data->intro = $intro;
+        return parent::render_from_template("mod_dialogue/dialogue_header", $data);
+    }
+
     public function render_new_dialogue_button($data) {
         return parent::render_from_template("mod_dialogue/new_dialogue_button", $data);
     }
