@@ -25,6 +25,42 @@ namespace mod_dialogue\local;
 
 defined('MOODLE_INTERNAL') || die();
 
+use moodle_url;
+use tabobject;
+use tabtree;
+
 class api {
+
+    public static function build_listing_tabtree() {
+        global $PAGE;
+
+        $context   = $PAGE->context;
+        $cm        = $PAGE->cm;
+        $url       = $PAGE->url;
+        $activetab = null;
+        $tabs      = [];
+        $tabs['view'] = new tabobject(
+            'view',
+            new moodle_url('/mod/dialogue/view.php', ['id' => $cm->id]),
+            get_string('viewconversations', 'dialogue')
+        );
+        $tabs['drafts'] = new tabobject(
+            'drafts',
+            new moodle_url('/mod/dialogue/drafts.php', ['id' => $cm->id]),
+            get_string('drafts', 'dialogue')
+        );
+        if (has_any_capability(['mod/dialogue:bulkopenrulecreate', 'mod/dialogue:bulkopenruleeditany'], $context)) {
+            $tabs['bulkopenrules'] = new tabobject(
+                'bulkopenrules',
+                new moodle_url('/mod/dialogue/bulkopenrules.php', ['id' => $cm->id]),
+                get_string('bulkopenrules', 'dialogue')
+            );
+        }
+        $currentpage = basename($url->out_omit_querystring(), '.php');
+        if (in_array($currentpage, array_keys($tabs))) {
+            $activetab = $currentpage;
+        }
+        return new tabtree($tabs, $activetab);
+    }
 
 }
