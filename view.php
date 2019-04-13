@@ -39,34 +39,18 @@ $PAGE->set_heading(format_string($course->fullname));
 $renderer = $PAGE->get_renderer('mod_dialogue');
 
 echo $OUTPUT->header();
-//echo $OUTPUT->heading($activityrecord->name);
-//if (!empty($dialogue->activityrecord->intro)) {
-    //echo $OUTPUT->box(format_module_intro('dialogue', $dialogue->activityrecord, $cm->id), 'generalbox', 'intro');
-//}
-
-//$data = new stdClass(); // new single_button().
-//$url = new moodle_url('/mod/dialogue/edit.php');
-//$data->id = '-1';
-//$data->cmid = $cm->id;
-//$data->sesskey = sesskey();
-//$data->url = $url->out();
-//$data->label = get_string('startanew', 'mod_dialogue');
-//echo $renderer->render_new_dialogue_button($data);
-
-
+$heading = $dialogue->to_record()->name;
+$intro = format_module_intro('dialogue', $dialogue->to_record(), $cm->id);
 $button = new single_button(
     new moodle_url('/mod/dialogue/edit.php', ['id' => '0', 'cmid' => $cm->id]),
     get_string('startanew', 'mod_dialogue'),
     'post',
     true
 );
-
-
-//moodle_url $url, $label, $method='post', $primary=false
-
+$tabtree = \mod_dialogue\local\api::build_listing_tabtree();
+echo $renderer->render_dialogue_header($heading, $intro);
 echo $renderer->render($button);
 echo html_writer::empty_tag('hr');
-$tabtree = \mod_dialogue\local\tab_tree::build_navigation();
 echo $renderer->render($tabtree);
 echo $renderer->render_list_filter_selector();
 echo $renderer->render_list_sort_selector();
