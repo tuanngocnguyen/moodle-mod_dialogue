@@ -60,9 +60,11 @@ class conversation_form extends \core\form\persistent {
         $cm       = $PAGE->cm;
         $context  = $PAGE->context;
         $form     = $this->_form;
-        $this->dialogue     = $this->_customdata['dialogue'];
-        $this->conversation = $this->get_persistent();
-        $maxbytes = $this->dialogue->get('maxbytes');
+        $dialogue = $this->_customdata['dialogue'];
+        $conversation = $this->get_persistent();
+        
+        $maxbytes = $dialogue->get('maxbytes');
+        $maxattachements = $dialogue->get('maxattachments');
         $editoroptions = [
             'collapsed' => true,
             'maxfiles' => EDITOR_UNLIMITED_FILES,
@@ -74,7 +76,7 @@ class conversation_form extends \core\form\persistent {
         $attachmentoptions = [
             'subdirs' => 0,
             'maxbytes' => $maxbytes,
-            'maxfiles' => $this->dialogue->get('maxattachments'),
+            'maxfiles' => $maxattachements,
             'accepted_types' => '*',
             'return_types' => FILE_INTERNAL,
             'areamaxbytes' => $maxbytes
@@ -85,8 +87,8 @@ class conversation_form extends \core\form\persistent {
         $options = array(
             'ajax' => 'mod_dialogue/form-recipient-selector',
             'multiple' => false,
-            'data-contextid' => $context->id,
-            'data-capability' => 'moodle/competency:planmanage'
+            'data-dialogueid' => $dialogue->get('id'),
+            'data-cmid' => $cm->id
         );
         $form->addElement('autocomplete', 'recipient', get_string('recipient', 'mod_dialogue'), [], $options);
 
@@ -100,7 +102,7 @@ class conversation_form extends \core\form\persistent {
             $editoroptions
         );
         $form->setType('body', PARAM_RAW);
-        if ($this->dialogue->get('maxattachments'))  {  //  0 = No attachments at all.
+        if ($maxattachements)  {  //  0 = No attachments at all.
             $form->addElement(
                 'filemanager',
                 'attachments[itemid]',
@@ -109,7 +111,16 @@ class conversation_form extends \core\form\persistent {
                 $attachmentoptions
             );
         }
-
+        
+        //$form->addElement('hidden', 'id');
+        //$form->setType('id', PARAM_INT);
+        
+        //$form->addElement('hidden', 'dialogueid');
+        //$form->setType('dialogueid', PARAM_INT);
+    
+        //$form->addElement('hidden', 'cmid');
+        //$form->setType('cmid', PARAM_INT);
+        
         $actionbuttongroup = array();
         $actionbuttongroup[] =& $form->createElement('submit', 'send', get_string('send', 'dialogue'));
         $actionbuttongroup[] =& $form->createElement('button', 'save', get_string('savedraft', 'dialogue'));

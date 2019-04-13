@@ -51,16 +51,16 @@ define(
 
         transport: function(selector, query, success, failure) {
             var promise;
-            var capability = $(selector).data('capability');
-            if (typeof capability === "undefined") {
-                capability = '';
+            var dialogueid = $(selector).data('dialogueid');
+            log.debug(dialogueid);
+            if (typeof dialogueid === "undefined") {
+                dialogueid = "";
             }
-            log.debug(capability);
             promise = Ajax.call([{
                 methodname: 'mod_dialogue_search_recipients',
                 args: {
                     query: query,
-                    capability: capability
+                    dialogueid: dialogueid
                 }
             }]);
 

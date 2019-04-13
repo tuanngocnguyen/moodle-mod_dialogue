@@ -23,6 +23,7 @@ require_once("$CFG->libdir/externallib.php");
 use context;
 use context_system;
 use context_course;
+use context_module;
 use context_helper;
 use context_user;
 use coding_exception;
@@ -48,8 +49,8 @@ class external extends external_api {
             PARAM_RAW,
             'Query string'
         );
-        $capability = new external_value(
-            PARAM_RAW,
+        $dialogueid = new external_value(
+            PARAM_INT,
             'Required capability'
         );
         $limitfrom = new external_value(
@@ -66,31 +67,42 @@ class external extends external_api {
         );
         return new external_function_parameters(array(
             'query' => $query,
-            'capability' => $capability,
-            //'context' => $context,
+            'dialogueid' => $dialogueid,
             'limitfrom' => $limitfrom,
             'limitnum' => $limitnum
         ));
     }
     
-    public static function search_recipients($query, $capability = '', $limitfrom = 0, $limitnum = 100) {
-        global $DB, $CFG, $PAGE, $USER;
+    public static function search_recipients($query, $dialogueid, $limitfrom = 0, $limitnum = 100) {
+        global $DB, $CFG, $COURSE, $PAGE, $USER;
         
        $params = self::validate_parameters(self::search_recipients_parameters(), array(
             'query' => $query,
-            'capability' => $capability,
+            'dialogueid' => $dialogueid,
             'limitfrom' => $limitfrom,
             'limitnum' => $limitnum,
         ));
-        $query = $params['query'];
-        $cap = $params['capability'];
-        $limitfrom = $params['limitfrom'];
-        $limitnum = $params['limitnum'];
+        $query      = $params['query'];
+        $dialogueid = $params['dialogueid'];
+        $limitfrom  = $params['limitfrom'];
+        $limitnum   = $params['limitnum'];
         
-        $context = context_system::instance();
+        // TODO - see if can use get fast mod info.
+        $cm = get_coursemodule_from_instance(
+            'dialogue',
+            $dialogueid,
+            0,
+            false,
+            MUST_EXIST
+        );
+        $context = context_module::instance($cm->id);
+        
         self::validate_context($context);
         $output = $PAGE->get_renderer('mod_dialogue');
-        
+    
+        $params = array();
+        $wheres = array();
+        $wheresql  = '';
         
         $extrasearchfields = array();
         if (!empty($CFG->showuseridentity) && has_capability('moodle/site:viewuseridentity', $context)) {
@@ -98,16 +110,46 @@ class external extends external_api {
         }
         $fields = \user_picture::fields('u', $extrasearchfields);
         
-        list($wheresql, $whereparams) = users_search_sql($query, 'u', true, $extrasearchfields);
-        list($sortsql, $sortparams) = users_order_by_sql('u', $query, $context);
+        //list($wheresql, $whereparams) = users_search_sql($query, 'u', true, $extrasearchfields);
+        //list($sortsql, $sortparams) = users_order_by_sql('u', $query, $context);
         
-        $countsql = "SELECT COUNT('x') FROM {user} u WHERE $wheresql";
-        $countparams = $whereparams;
-        $sql = "SELECT $fields FROM {user} u WHERE $wheresql  ORDER BY $sortsql";
-        $params = $whereparams + $sortparams;
+        //$countsql = "SELECT COUNT('x') FROM {user} u WHERE $wheresql";
+        //$countparams = $whereparams;
+        //$sql = "SELECT $fields FROM {user} u WHERE $wheresql  ORDER BY $sortsql";
+        //$params = $whereparams + $sortparams;
         
-        $count = $DB->count_records_sql($countsql, $countparams);
-        $result = $DB->get_recordset_sql($sql, $params, $limitfrom, $limitnum);
+        //$count = $DB->count_records_sql($countsql, $countparams);
+        //$result = $DB->get_recordset_sql($sql, $params, $limitfrom, $limitnum);
+    
+        
+        list($esql, $eparams) = get_enrolled_sql($context, 'mod/dialogue:receive', null, true);
+        $params = array_merge($params, $eparams);
+    
+        $basesql = "FROM {user} u
+                JOIN ($esql) je ON je.id = u.id";
+    
+        // current user doesn't need to be in list
+        $wheres[] = "u.id != $USER->id";
+    
+        $fullname = $DB->sql_concat('u.firstname', "' '", 'u.lastname');
+    
+        if (!empty($query)) {
+            $wheres[] = $DB->sql_like($fullname, ':search1', false, false);
+            $params['search1'] = "%$query%";
+        }
+    
+        if ($wheres) {
+            $wheresql = " WHERE " . implode(" AND ", $wheres);
+        }
+    
+        $countsql = "SELECT COUNT(1) " . $basesql . $wheresql;
+        
+        $orderby = " ORDER BY $fullname ASC";
+    
+        $selectsql = "SELECT $fields " . $basesql. $wheresql . $orderby;
+    
+        $count = $DB->count_records_sql($countsql, $params);
+        $result = $DB->get_recordset_sql($selectsql, $params, $limitfrom, $limitnum);
         
         $users = array();
         foreach ($result as $key => $user) {
