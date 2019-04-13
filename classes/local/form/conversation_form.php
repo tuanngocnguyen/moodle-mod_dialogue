@@ -52,11 +52,6 @@ class conversation_form extends \core\form\persistent {
         global $CFG;
         // Need to have repository library and form element loaded for this to work.
         require_once($CFG->dirroot . '/repository/lib.php');
-        //require_once($CFG->dirroot . '/mod/dialogue/classes/local/form/recipientpicker.php');
-        \MoodleQuickForm::registerElementType(
-            'recipientpicker',
-            $CFG->dirroot . '/mod/dialogue/classes/local/form/recipientpicker.php',
-            'MoodleQuickForm_recipientpicker');
         parent::__construct($action, $customdata, $method, $target, $attributes, $editable, $ajaxformdata);
     }
 
@@ -65,9 +60,9 @@ class conversation_form extends \core\form\persistent {
         $cm       = $PAGE->cm;
         $context  = $PAGE->context;
         $form     = $this->_form;
-        $dialogue     = $this->_customdata['dialogue'];
-        $conversation = $this->get_persistent();
-        $maxbytes = $dialogue->get('maxbytes');
+        $this->dialogue     = $this->_customdata['dialogue'];
+        $this->conversation = $this->get_persistent();
+        $maxbytes = $this->dialogue->get('maxbytes');
         $editoroptions = [
             'collapsed' => true,
             'maxfiles' => EDITOR_UNLIMITED_FILES,
@@ -79,15 +74,22 @@ class conversation_form extends \core\form\persistent {
         $attachmentoptions = [
             'subdirs' => 0,
             'maxbytes' => $maxbytes,
-            'maxfiles' => $dialogue->get('maxattachments'),
+            'maxfiles' => $this->dialogue->get('maxattachments'),
             'accepted_types' => '*',
             'return_types' => FILE_INTERNAL,
             'areamaxbytes' => $maxbytes
         ];
-
         // Why? Because I had to, moodleform fun.
         $form->addElement('header', 'all', get_string('yournewdialogue', 'dialogue'));
-        $form->addElement('recipientpicker', 'recipient', get_string('recipient', 'dialogue'));
+
+        $options = array(
+            'ajax' => 'mod_dialogue/form-recipient-selector',
+            'multiple' => false,
+            'data-contextid' => $context->id,
+            'data-capability' => 'moodle/competency:planmanage'
+        );
+        $form->addElement('autocomplete', 'recipient', get_string('recipient', 'mod_dialogue'), [], $options);
+
         $form->addElement('text', 'subject', get_string('subject', 'dialogue'), 'size="100%"');
         $form->setType('subject', PARAM_TEXT);
         $form->addElement(
@@ -98,7 +100,7 @@ class conversation_form extends \core\form\persistent {
             $editoroptions
         );
         $form->setType('body', PARAM_RAW);
-        if ($dialogue->get('maxattachments'))  {  //  0 = No attachments at all.
+        if ($this->dialogue->get('maxattachments'))  {  //  0 = No attachments at all.
             $form->addElement(
                 'filemanager',
                 'attachments[itemid]',
@@ -116,12 +118,4 @@ class conversation_form extends \core\form\persistent {
         $form->addGroup($actionbuttongroup, 'actionbuttongroup', '', ' ', false);
     }
 
-    public function render() {
-        global $PAGE;
-        $output = '';
-        $renderer = $PAGE->get_renderer('mod_dialogue');
-        $output .= $renderer->render_from_template('mod_dialogue/recipient_drawer', []);
-        $output .= parent::render();
-        return $output;
-    }
 }

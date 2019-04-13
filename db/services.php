@@ -14,19 +14,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
-/**
- * Code fragment to define the module version etc.
- * This fragment is called by /admin/index.php
- *
- * @package mod-dialogue
- * @license   http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
- */
 defined('MOODLE_INTERNAL') || die();
 
-$plugin->version   = 2018051702;
-$plugin->requires  = 2018051700;        // See http://docs.moodle.org/dev/Moodle_Versions
-$plugin->component = 'mod_dialogue';    // Full name of the plugin (used for diagnostics)
-$plugin->release   = '3.5.0';           // Semantic version name
-$plugin->maturity  = MATURITY_ALPHA;   // This version's maturity level.
-$plugin->dependencies = array();
-
+$functions = [
+    'mod_dialogue_search_recipients' => [
+        'classname'    => 'mod_dialogue\external',
+        'methodname'   => 'search_recipients',
+        'classpath'    => '',
+        'description'  => '',
+        'type'         => 'read',
+        'capabilities' => '',
+        'ajax'         => true
+    ]
+];
