@@ -31,65 +31,35 @@ class conversation_persistent extends persistent {
             'courseid' => [
                 'type' => PARAM_INT,
                 'default' => $COURSE->id,
-                'description' => 'Foreign key reference to the course'
+                'description' => 'Foreign key reference to the course.'
             ],
             'dialogueid' => [
                 'type' => PARAM_INT,
                 'default' => 0,
-                'description' => 'Foreign key reference to dialogue'
+                'description' => 'Foreign key reference to dialogue.'
+            ],
+            'messageid' => [
+                'type' => PARAM_INT,
+                'default' => 0,
+                'description' => 'Foreign key reference to opening message.'
             ],
             'subject' => [
                 'type' => PARAM_RAW,
-                'description' => 'Subject',
-                'null' => NULL_ALLOWED,
+                'description' => 'Subject or topic of dialogue.',
                 'default' => ''
-            ],
-            'ownerid' => [
-                'type' => PARAM_INT,
-                'default' => 0,
-                'description' => 'Current owner of conversation'
-            ],
-            'authorid' => [
-                'type' => PARAM_INT,
-                'default' => 0,
-                'description' => 'Initial author of conversation'
-            ],
-            'body' => [
-                'type' => PARAM_RAW,
-                'description' => 'Message content',
-                'null' => NULL_ALLOWED,
-                'default' => ''
-            ],
-            'bodyformat' => [
-                'choices' => [
-                    FORMAT_HTML,
-                    FORMAT_MOODLE,
-                    FORMAT_PLAIN,
-                    FORMAT_MARKDOWN
-                ],
-                'type' => PARAM_INT,
-                'default' => FORMAT_HTML
-            ],
-            'bodytrust' => [
-                'type' => PARAM_INT,
-                'default' => 0,
-            ],
-            'attachments' => [
-                'type' => PARAM_INT,
-                'default' => 0,
-            ],
-            'draft' => [
-                'type' => PARAM_INT,
-                'default' => 1,
             ],
             'closed' => [
                 'type' => PARAM_INT,
-                'default' => 0,
+                'default' => 0
             ],
-            'automated' => [
+            'replycount' => [
                 'type' => PARAM_INT,
-                'default' => 0,
+                'default' => 1
             ],
+            'rules' => [
+                'type' => PARAM_INT,
+                'default' => 0
+            ]
         ];
     }
     
